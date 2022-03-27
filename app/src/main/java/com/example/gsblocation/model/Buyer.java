@@ -2,7 +2,7 @@ package com.example.gsblocation.model;
 
 public class Buyer extends User {
 
-    public Buyer(User unUser) {
-        super(unUser);
+    public Buyer(Integer num, String login, String mdp, String nom, String prenom, String adresse, String codeVille, String telephone, String type) {
+        super(num, login, mdp, nom, prenom, adresse, codeVille, telephone, type);
     }
 }

@@ -1,22 +1,32 @@
 package com.example.gsblocation.controller;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
-import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import com.example.gsblocation.model.APIAccess;
 import com.example.gsblocation.model.Buyer;
+import com.example.gsblocation.model.District;
+import com.example.gsblocation.model.Flat;
+import com.example.gsblocation.model.Owner;
 import com.example.gsblocation.model.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Control {
+public class Control extends AppCompatActivity {
     private static Control instance = null;
     private static User user;
     User ConnectedUser;
     Buyer ConnectedBuyer;
+    Owner ConnectedOwner;
+
+    private JSONArray FlatsArray;
 
     private Control(){
         super();
@@ -29,34 +39,41 @@ public class Control {
         return Control.instance;
     }
 
-    public User createUser(Integer num, String login, String mdp, String nom, String prenom, String adresse, String codeville, String tel, String type) {
-        user = new User(num, login, mdp, nom, prenom, adresse, codeville, tel, type);
-        return user;
-    }
-
-    public String getNomTest() {
-        user.testResult();
-        return user.getNom();
-    }
-
+    //méthode appelée depuis Home afin de créer un user en fonction des données de connexion
     public User whoLogin(String whoisonline) {
         try {
             JSONArray UserArray = new JSONArray(whoisonline);
             JSONObject UserInfo = UserArray.getJSONObject(0);
-            //Toast.makeText(Dashboard.this, "Succes : "+ UserInfo, Toast.LENGTH_SHORT).show();
             ConnectedUser = new User(UserInfo.getInt("num"),UserInfo.getString("login"),UserInfo.getString("mdp"),UserInfo.getString("nom"),UserInfo.getString("prenom"),UserInfo.getString("adresse"),UserInfo.getString("codeVille"),UserInfo.getString("telephone"),UserInfo.getString("type"));
-            Log.d("info user", "********************" + ConnectedUser.convertToJSON());
+            Log.d("Connected user", "********************" + ConnectedUser.convertToJSON());
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        /*if(ConnectedUser.getType().equals("c")) {
-            ConnectedBuyer = new Buyer(ConnectedUser);
+        if(ConnectedUser.getType().equals("c")) {
+            ConnectedBuyer = new Buyer(ConnectedUser.getNum(),ConnectedUser.getLogin(),ConnectedUser.getMdp(),ConnectedUser.getNom(),ConnectedUser.getPrenom(),ConnectedUser.getAdresse(),ConnectedUser.getCodeVille(),ConnectedUser.getTelephone(),ConnectedUser.getType());
             Log.d("info buyer", "********************" + ConnectedBuyer.convertToJSON());
         }
         else if(ConnectedUser.getType().equals("p")) {
-
-        }*/
-        Log.d("value", "********************" + ConnectedUser.convertToJSON());
+            ConnectedOwner = new Owner(ConnectedUser.getNum(),ConnectedUser.getLogin(),ConnectedUser.getMdp(),ConnectedUser.getNom(),ConnectedUser.getPrenom(),ConnectedUser.getAdresse(),ConnectedUser.getCodeVille(),ConnectedUser.getTelephone(),ConnectedUser.getType());
+            Log.d("info buyer", "********************" + ConnectedOwner.convertToJSON());
+        }
+        //a voir comment retourner le buyer ou le owner
         return ConnectedUser;
+    }
+
+    //il ne veut pas me créer mon JSONArray comprend pas je laisse de côté pour le moment
+    public ArrayList<District> getListDistrict(String alldistricts) {
+        ArrayList<District> districtsList = new ArrayList<>();
+        try {
+            JSONArray DistrictsArray = new JSONArray(alldistricts);
+            for(int i=0;i < DistrictsArray.length();i++) {
+                JSONObject DistrictsObject = DistrictsArray.getJSONObject(i);
+                District unDistrict = new District(DistrictsObject.getInt("arrondisseDem"));
+                districtsList.add(i, unDistrict);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return districtsList;
     }
 }

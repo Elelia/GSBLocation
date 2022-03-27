@@ -10,8 +10,20 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.GSBLocation">
+        android:theme="@style/Theme.GSBLocation"
+        android:usesCleartextTraffic="true">
+        <activity
+            android:name=".view.RequestOwner"
+            android:exported="false" />
+        <activity
+            android:name=".view.Profile"
+            android:exported="false" />
+        <activity
+            android:name=".view.RequestBuyer"
+            android:exported="false" />
+        <activity
+            android:name=".view.Search"
+            android:exported="false" />
         <activity
             android:name=".view.Home"
             android:exported="false" />
