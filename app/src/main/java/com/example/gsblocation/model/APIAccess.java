@@ -12,6 +12,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 
 public class APIAccess {
 
@@ -121,6 +124,26 @@ public class APIAccess {
         MySingleton.getInstance(context).addToRequestQueue(request);
     }
 
+    //retrouve les demandes en fonction du numéro du client
+    public void ReturnRequestsByNumC(Integer num, VolleyResponseListener volleyResponseListener) {
+        String url = QUERY_FOR_REQUESTS + num;
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        volleyResponseListener.onResponse(response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("value", "****************", error);
+                volleyResponseListener.onError("Not working");
+            }
+        });
+        MySingleton.getInstance(context).addToRequestQueue(request);
+    }
+
     //insert into requests
     public void sendDistrictRequest(String type, String dateLimite, Integer num, VolleyResponseListener volleyResponseListener) {
         String url = QUERY_FOR_REQUESTS + "?typeDem=" + type +"&dateLimite=" + dateLimite +"&num=" + num;
@@ -175,7 +198,7 @@ public class APIAccess {
 
     //créer une nouvelle ligne dans la table concerner
     public void sendConcernRequest(Integer numD, Integer numA, VolleyResponseListener volleyResponseListener) {
-        String url = QUERY_FOR_REQUESTS + "?numDem=" + numD +"&arrondisseDem=" + numA;
+        String url = QUERY_FOR_REQUESTS + "concerner/?numDem=" + numD +"&arrondisseDem=" + numA;
 
         JSONObject concernObject = new JSONObject();
         JSONArray concernArray = new JSONArray();
@@ -250,5 +273,47 @@ public class APIAccess {
             }
         });
         MySingleton.getInstance(context).addToRequestQueue(request);
+    }
+
+    //update informations of user qui insère des valeurs null en base de données ahah
+    public void UpdateUserInfo(Integer num, String nom, String prenom, String adresse, String ville, String tel, VolleyResponseListener volleyResponseListener) {
+        try {
+            String rightAdresse = URLEncoder.encode(adresse, "utf-8");
+            String rightVille = URLEncoder.encode(ville, "utf-8");
+            String rightTel = URLEncoder.encode(tel, "utf-8");
+            String url = QUERY_FOR_USERS + "update/" + num + "?nom=" + nom + "&prenom=" + prenom + "&adresse=" + rightAdresse + "&codeVille=" + rightVille + "&telephone=" + rightTel;
+
+            JSONObject userObject = new JSONObject();
+            JSONArray userArray = new JSONArray();
+            try {
+                userObject.put("nom",nom);
+                userObject.put("prenom",prenom);
+                userObject.put("adresse",adresse);
+                userObject.put("codeVille",ville);
+                userObject.put("telephone",tel);
+                userArray.put(userObject);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            Log.d("Update ok", "**************" + userArray);
+
+            JsonArrayRequest request = new JsonArrayRequest(Request.Method.PUT, url, userArray,
+                    new Response.Listener<JSONArray>() {
+                        @Override
+                        public void onResponse(JSONArray response) {
+                            Log.d("update user","***********************"+response);
+                            //volleyResponseListener.onResponse(response);
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d("value", "****************", error);
+                    //volleyResponseListener.onError("Not working");
+                }
+            });
+            MySingleton.getInstance(context).addToRequestQueue(request);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
 }

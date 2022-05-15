@@ -3,12 +3,19 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/Lis_o/AndroidStudioProjects/GSBLocation/app/src/main/res/layout/activity_add_flat.xml" value="0.2171875" />
         <entry key="..\:/Users/Lis_o/AndroidStudioProjects/GSBLocation/app/src/main/res/layout/activity_home.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Lis_o/AndroidStudioProjects/GSBLocation/app/src/main/res/layout/activity_main.xml" value="0.22826086956521738" />
         <entry key="..\:/Users/Lis_o/AndroidStudioProjects/GSBLocation/app/src/main/res/layout/activity_profile.xml" value="0.25416666666666665" />
+        <entry key="..\:/Users/Lis_o/AndroidStudioProjects/GSBLocation/app/src/main/res/layout/activity_profile_buyer.xml" value="0.18385416666666668" />
+        <entry key="..\:/Users/Lis_o/AndroidStudioProjects/GSBLocation/app/src/main/res/layout/activity_profile_owner.xml" value="0.18385416666666668" />
         <entry key="..\:/Users/Lis_o/AndroidStudioProjects/GSBLocation/app/src/main/res/layout/activity_request.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Lis_o/AndroidStudioProjects/GSBLocation/app/src/main/res/layout/activity_request_owner.xml" value="0.264" />
+        <entry key="..\:/Users/Lis_o/AndroidStudioProjects/GSBLocation/app/src/main/res/layout/activity_reservation.xml" value="0.18385416666666668" />
         <entry key="..\:/Users/Lis_o/AndroidStudioProjects/GSBLocation/app/src/main/res/layout/activity_search.xml" value="0.264" />
+        <entry key="..\:/Users/Lis_o/AndroidStudioProjects/GSBLocation/app/src/main/res/layout/activity_send_visit.xml" value="0.24818840579710144" />
+        <entry key="..\:/Users/Lis_o/AndroidStudioProjects/GSBLocation/app/src/main/res/layout/row.xml" value="0.23541666666666666" />
+        <entry key="..\:/Users/Lis_o/AndroidStudioProjects/GSBLocation/app/src/main/res/layout/spinner_item.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Lis_o/AndroidStudioProjects/GSBLocation/app/src/main/res/menu/drawer_menu.xml" value="0.264" />
       </map>
     </option>

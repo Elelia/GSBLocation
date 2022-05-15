@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import com.example.gsblocation.R;
 import com.example.gsblocation.controller.Control;
+import com.example.gsblocation.controller.ControlRequestBuyer;
+import com.example.gsblocation.controller.ControlRequestOwner;
 import com.example.gsblocation.model.APIAccess;
 import com.example.gsblocation.model.District;
 import com.example.gsblocation.model.Request;
@@ -26,11 +28,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RequestBuyer extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class RequestBuyer extends AppCompatActivity {
 
-    Control control;
+    ControlRequestBuyer control;
     Spinner spinner;
-    ArrayList<Integer> districtsList = new ArrayList<Integer>();;
+    ArrayList<Integer> districtsList = new ArrayList<Integer>();
     Button bRequest;
     EditText typeTxt;
     EditText dateTxt;
@@ -42,7 +44,7 @@ public class RequestBuyer extends AppCompatActivity implements AdapterView.OnIte
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request);
-        this.control = Control.getInstance(this);
+        this.control = ControlRequestBuyer.getInstance(this);
         spinner = (Spinner)findViewById(R.id.spinnerDistricts);
         bRequest = findViewById(R.id.btnSendRequest);
         typeTxt = findViewById(R.id.typeEdit);
@@ -51,19 +53,34 @@ public class RequestBuyer extends AppCompatActivity implements AdapterView.OnIte
         String whoisonline = intent.getStringExtra("whoisonline");
 
         //je rempli ma liste, enfin je crois ?
-        getDistrictsList();
+        //faire une liste déroulante pour le type d'appartement aussi
+        districtsList = control.getDistrictsList();
         //pourquoi y a rien dans le districtlist et qu'il le rempli quand même
         Log.d("District list ok", "**************" + districtsList);
         populateSpinner();
-        getItem();
-        sendRequest();
+        //getItem();
+        onClickSend();
+
+        returnLogin();
     }
 
     private void populateSpinner() {
         ArrayAdapter<Integer> adapter = new ArrayAdapter<Integer>(this, android.R.layout.simple_spinner_item, districtsList);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        //adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                String test = parentView.getItemAtPosition(position).toString();
+                Toast.makeText(parentView.getContext(), "Selected: " + test, Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                Log.d("Nothing selected", "**************" );
+            }
+        });
     }
 
     private void getItem() {
@@ -71,6 +88,7 @@ public class RequestBuyer extends AppCompatActivity implements AdapterView.OnIte
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
                 String test = parentView.getItemAtPosition(position).toString();
+                Toast.makeText(parentView.getContext(), "Selected: " + test, Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -81,7 +99,7 @@ public class RequestBuyer extends AppCompatActivity implements AdapterView.OnIte
     }
 
     //on appelle l'api pour récupérer les districts de la base de données et ensuite les afficher dans le spinner
-    public void getDistrictsList() {
+    /*public void getDistrictsList() {
         APIAccess APIAccess = new APIAccess(RequestBuyer.this);
         APIAccess.ReturnAllDistricts(new APIAccess.VolleyResponseListener() {
             @Override
@@ -102,24 +120,22 @@ public class RequestBuyer extends AppCompatActivity implements AdapterView.OnIte
                 }
             }
         });
-    }
+    }*/
 
     //Il ne veut pas récupérer l'id de l'utilisateur connecté
     //en fonction de l'arrondissement sélectionné je dois aussi l'enregistrer dans la table concerner (numArron + numDem)
-    public void sendRequest() {
-        String type = typeTxt.getText().toString();
-        String date = dateTxt.getText().toString();
+    public void onClickSend() {
         /*int num = Integer.parseInt(whoisonline);*/
         bRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                APIAccess APIAccess = new APIAccess(RequestBuyer.this);
-                /*String type = "studio";
-                String date = "2022-06-12";*/
-                int num = 100;
-                int numArron = 20;
+                String type = typeTxt.getText().toString();
+                String date = dateTxt.getText().toString();
+                Integer numArron = 20;
+                Integer num = 100;
+                control.sendRequest(type, date, numArron, num);
                 //on insert into demandes
-                APIAccess.sendDistrictRequest(type, date, num, new APIAccess.VolleyResponseListener() {
+                /*APIAccess.sendDistrictRequest(type, date, num, new APIAccess.VolleyResponseListener() {
                     @Override
                     public void onError(String message) {
                         Log.d("Error send Request", "***************" + message);
@@ -151,7 +167,8 @@ public class RequestBuyer extends AppCompatActivity implements AdapterView.OnIte
                     }
                 });
                 //et là on insert into concerner normalement
-                APIAccess.sendConcernRequest(numDem, numArron, new APIAccess.VolleyResponseListener() {
+                //mais j'arrive pas à passer le numéro que je récupère dans mes paramètres
+                APIAccess.sendConcernRequest(9, numArron, new APIAccess.VolleyResponseListener() {
                     @Override
                     public void onError(String message) {
                         Log.d("Error send concern", "***************" + message);
@@ -162,18 +179,17 @@ public class RequestBuyer extends AppCompatActivity implements AdapterView.OnIte
                         Log.d("Concern ok", "**************" + response);
                     }
                 });
-                Toast.makeText(RequestBuyer.this, "NUL OMG ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(RequestBuyer.this, "NUL OMG ", Toast.LENGTH_SHORT).show();*/
             }
         });
     }
 
-    @Override
-    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> adapterView) {
-
+    private void returnLogin() {
+        ((Button) findViewById(R.id.buttonReturnHome)).setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(RequestBuyer.this, Home.class);
+                startActivity(intent);
+            }
+        });
     }
 }

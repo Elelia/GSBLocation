@@ -7,6 +7,7 @@
     tools:context=".view.RequestOwner">
 
     <TableLayout
+        android:id="@+id/mytable"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0"
@@ -75,6 +76,21 @@
             android:id="@+id/listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/buttonReturnHome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="60dp"
+            android:text="Retour au menu" />
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

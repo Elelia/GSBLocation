@@ -29,7 +29,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:padding="10dp"
-                    android:text="Ici c'est pour les recherches d'appartements."
+                    android:text="Recherche d'appartements"
                     android:textSize="16sp" />
 
                 <TextView
@@ -79,7 +79,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="Taille max :" />
+                    android:text="Arrondissement :" />
+
+                <Spinner
+                    android:id="@+id/spinner5"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:spinnerMode="dropdown" />
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Prix max :" />
 
                 <Spinner
                     android:id="@+id/spinner4"
@@ -110,6 +124,14 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/buttonReturnHome"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="60dp"
+                    android:text="Retour au menu" />
 
             </LinearLayout>
         </ScrollView>

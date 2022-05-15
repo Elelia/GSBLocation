@@ -38,7 +38,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:padding="10dp"
-                    android:text="Bienvenue sur l'application GSB ayant pour but de proposer votre appartement à la location ou de louer un appartement disponible. Seuls les collaborateurs de l'entreprise GSB peuvent se connecter à l'application."
+                    android:text="Bienvenue sur l'application GSB, ayant pour but de proposer votre appartement à la location ou de louer un appartement disponible. Seuls les collaborateurs de l'entreprise GSB peuvent se connecter à l'application."
                     android:textSize="16sp" />
 
                 <TextView

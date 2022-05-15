@@ -13,6 +13,7 @@ import com.example.gsblocation.model.Buyer;
 import com.example.gsblocation.model.District;
 import com.example.gsblocation.model.Flat;
 import com.example.gsblocation.model.Owner;
+import com.example.gsblocation.model.Request;
 import com.example.gsblocation.model.User;
 
 import org.json.JSONArray;
@@ -75,5 +76,19 @@ public class Control extends AppCompatActivity {
             e.printStackTrace();
         }
         return districtsList;
+    }
+
+    public ArrayList<Request> testTryRequests(JSONArray response) {
+        ArrayList<Request> requestsList = new ArrayList<>();
+        for(int i=0;i<response.length();i++) {
+            try {
+                JSONObject RequestsObject = response.getJSONObject(i);
+                Request oneRequest = new Request(RequestsObject);
+                requestsList.add(i, oneRequest);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return requestsList;
     }
 }

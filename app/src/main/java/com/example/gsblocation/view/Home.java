@@ -27,6 +27,8 @@ public class Home extends AppCompatActivity {
         this.control = Control.getInstance(this);
         userInfo = (TextView)findViewById(R.id.textUser);
         ImageButton buttonRequest = (ImageButton)findViewById(R.id.btnRequestOwner);
+        ImageButton buttonOwner = (ImageButton)findViewById(R.id.btnProfileOwner);
+        ImageButton buttonAdd = (ImageButton)findViewById(R.id.btnAdd);
 
         Intent intent = getIntent();
         String whoisonline = intent.getStringExtra("whoisonline");
@@ -37,24 +39,37 @@ public class Home extends AppCompatActivity {
         userInfo.setText("Bienvenue "+ prenom + " " + nom + " !");
         if(ConnectedUser.getType().equals("c")) {
             buttonRequest.setVisibility(View.INVISIBLE);
+            buttonOwner.setVisibility(View.INVISIBLE);
+            buttonAdd.setVisibility(View.INVISIBLE);
         } else {
-            //pour aller aux demandes clients
             goRequestOwner();
+            goProfileOwner();
+            goAddOwner();
         }
         //me ramène à la page de connexion
         returnLogin();
         //pour aller à la recherche
         goSearch();
-        //pour aller au profil
-        goProfile();
-        //pour aller aux demandes propriétaires
+        //pour aller au profil buyer
+        goProfileBuyer();
+        //pour aller aux demandes buyer
         goRequest();
     }
 
-    private void goProfile() {
-        ((ImageButton) findViewById(R.id.btnProfile)).setOnClickListener(new Button.OnClickListener() {
+    private void goProfileBuyer() {
+        ((ImageButton) findViewById(R.id.btnProfileBuyer)).setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
-                Intent intent = new Intent(Home.this, Profile.class);
+                Intent intent = new Intent(Home.this, ProfileBuyer.class);
+                intent.putExtra("whoisonline", ConnectedUser.toString());
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void goProfileOwner() {
+        ((ImageButton) findViewById(R.id.btnProfileOwner)).setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(Home.this, ProfileOwner.class);
                 intent.putExtra("whoisonline", ConnectedUser.getNum().toString());
                 startActivity(intent);
             }
@@ -84,6 +99,16 @@ public class Home extends AppCompatActivity {
         ((ImageButton) findViewById(R.id.btnRequestOwner)).setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(Home.this, RequestOwner.class);
+                intent.putExtra("whoisonline", ConnectedUser.getNum().toString());
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void goAddOwner() {
+        ((ImageButton) findViewById(R.id.btnAdd)).setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(Home.this, AddFlat.class);
                 intent.putExtra("whoisonline", ConnectedUser.getNum().toString());
                 startActivity(intent);
             }

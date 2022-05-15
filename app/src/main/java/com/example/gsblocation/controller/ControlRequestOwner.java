@@ -33,9 +33,9 @@ public class ControlRequestOwner extends AppCompatActivity {
         return ControlRequestOwner.instance;
     }
 
-    //donc je récupère les appartements du propriétaire
-    //ensuite je dois afficher les demandes en fonction du type des appartements
-    //donc le requestbytype mais en plusieurs fois, tout faire dans la même fonction ?
+    //le but c'est de récupérer le type d'appartement que possède le propriétaire
+    //et ensuite de récupérer les demandes qui concernent ce type là
+    //ça fonctionne bien mais ça ne rempli pas correctement mes listes ensuite ahah vie naze
     public ArrayList<String> getTypeList() {
         int numProp = 1;
         APIAccess APIAccess = new APIAccess(ControlRequestOwner.this);
@@ -47,6 +47,7 @@ public class ControlRequestOwner extends AppCompatActivity {
 
             @Override
             public void onResponse(JSONArray response) {
+                //je passe bien dans mon for et il voit bien mon objet, il le parcourt correctement
                 for (int i = 0; i < response.length(); i++) {
                     JSONObject FlatsObject = null;
                     try {

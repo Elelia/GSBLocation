@@ -13,10 +13,19 @@
         android:theme="@style/Theme.GSBLocation"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".view.SendVisit"
+            android:exported="false" />
+        <activity
+            android:name=".view.AddFlat"
+            android:exported="false" />
+        <activity
+            android:name=".view.ProfileOwner"
+            android:exported="false" />
+        <activity
             android:name=".view.RequestOwner"
             android:exported="false" />
         <activity
-            android:name=".view.Profile"
+            android:name=".view.ProfileBuyer"
             android:exported="false" />
         <activity
             android:name=".view.RequestBuyer"

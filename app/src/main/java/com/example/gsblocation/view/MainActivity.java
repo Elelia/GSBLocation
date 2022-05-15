@@ -19,10 +19,10 @@ import org.json.JSONArray;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText loginTxt;
-    EditText mdpTxt;
-    Control control;
-    Button bLogin;
+    private EditText loginTxt;
+    private EditText mdpTxt;
+    private Control control;
+    private Button bLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

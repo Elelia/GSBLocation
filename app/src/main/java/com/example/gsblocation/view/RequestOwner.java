@@ -11,8 +11,12 @@ import com.example.gsblocation.model.Request;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -24,14 +28,15 @@ import java.util.List;
 
 public class RequestOwner extends AppCompatActivity {
 
-    ControlRequestOwner control;
-    String whoisonline;
-    ListView listView;
-    ArrayList<String> typesList = new ArrayList<>();
-    ArrayList<String> tryTypeList = new ArrayList<>();
-    ArrayList<Request> requestsList = new ArrayList<>();
-    ArrayList<Request> tryRequestsList = new ArrayList<>();
-    ArrayList<Flat> flatsList = new ArrayList<>();
+    private ControlRequestOwner control;
+    private String whoisonline;
+    private ListView listView;
+    private ArrayList<String> typesList = new ArrayList<>();
+    private ArrayList<String> tryTypeList = new ArrayList<>();
+    private ArrayList<Request> requestsList = new ArrayList<>();
+    private ArrayList<Request> tryRequestsList = new ArrayList<>();
+    private ArrayList<Flat> flatsList = new ArrayList<>();
+    private TableLayout table;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,74 +44,36 @@ public class RequestOwner extends AppCompatActivity {
         setContentView(R.layout.activity_request_owner);
         this.control = ControlRequestOwner.getInstance(this);
         listView = (ListView)findViewById(R.id.listview);
-        //flatsList = new ArrayList<>();
+        table = (TableLayout)findViewById(R.id.mytable);
 
         Intent intent = getIntent();
         whoisonline = intent.getStringExtra("whoisonline");
 
-        typesList = getTypeList();
-        requestsList = getRequestsList(typesList);
+        typesList = control.getTypeList();
+        requestsList = control.getRequestsList(typesList);
 
         ArrayAdapter<String> adapterFlats = new ArrayAdapter(RequestOwner.this, android.R.layout.simple_list_item_1, requestsList);
         listView.setAdapter(adapterFlats);
-        //quand je clique sur une ligne du tableau (si il veut bien se créer ahah), il faut qu'elle m'envoit sur une création de visite
+        //ça marche pas j'adore yeah
+        returnLogin();
     }
 
-    public ArrayList<String> getTypeList() {
-        int numProp = 1;
-        APIAccess APIAccess = new APIAccess(RequestOwner.this);
-        APIAccess.ReturnFlatsByIdProp(numProp, new APIAccess.VolleyResponseListener() {
-            @Override
-            public void onError(String message) {
-                Log.d("Error flats", "***************" + message);
-            }
+    //il me faudrait un truc pour afficher sous forme de tableau
+    //ou de liste idk ce qui serait le mieux
+    /*public void populateTable(ArrayList<Request> list) {
+        for(int i=0; i < list.size(); i++) {
+            TableRow row = new TableRow(this);
 
-            @Override
-            public void onResponse(JSONArray response) {
-                for (int i = 0; i < response.length(); i++) {
-                    JSONObject FlatsObject = null;
-                    try {
-                        FlatsObject = response.getJSONObject(i);
-                        Flat unFlat = new Flat(FlatsObject);
-                        tryTypeList.add(i, unFlat.getType());
-                        flatsList.add(i, unFlat);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
+        }
+    }*/
+
+    private void returnLogin() {
+        ((Button) findViewById(R.id.buttonReturnHome)).setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(RequestOwner.this, Home.class);
+                startActivity(intent);
             }
         });
-        Log.d("type list", "***************" + tryTypeList);
-        return tryTypeList;
-    }
-
-    public ArrayList<Request> getRequestsList(ArrayList<String> typeList) {
-        for (int i = 0; i < typeList.size(); i++) {
-            String unType = typeList.get(i);
-            APIAccess APIAccess = new APIAccess(RequestOwner.this);
-            APIAccess.returnRequestsByType(unType, new APIAccess.VolleyResponseListener() {
-                @Override
-                public void onError(String message) {
-                    Log.d("Error request", "***************" + message);
-                }
-
-                @Override
-                public void onResponse(JSONArray response) {
-                    for (int i = 0; i < response.length(); i++) {
-                        JSONObject RequestsObject = null;
-                        try {
-                            RequestsObject = response.getJSONObject(i);
-                            Request uneDemande = new Request(RequestsObject);
-                            tryRequestsList.add(i, uneDemande);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            });
-        }
-        Log.d("request list", "***************" + tryRequestsList);
-        return tryRequestsList;
     }
 
 }
