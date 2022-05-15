@@ -73,7 +73,6 @@ public class ControlRequestBuyer extends AppCompatActivity {
                 Log.d("Request ok", "**************" + response);
             }
         });
-        //on retrouve la dernière demande donc celle qui vient d'être créer normalement
         APIAccess.returnLastRequest(new APIAccess.VolleyResponseListener() {
             @Override
             public void onError(String message) {
@@ -95,7 +94,7 @@ public class ControlRequestBuyer extends AppCompatActivity {
         });
         //et là on insert into concerner normalement
         //mais j'arrive pas à passer le numéro que je récupère dans mes paramètres
-        APIAccess.sendConcernRequest(9, numArron, new APIAccess.VolleyResponseListener() {
+        APIAccess.sendConcernRequest(10, numArron, new APIAccess.VolleyResponseListener() {
             @Override
             public void onError(String message) {
                 Log.d("Error send concern", "***************" + message);
