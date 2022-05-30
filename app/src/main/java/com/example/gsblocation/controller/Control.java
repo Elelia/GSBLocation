@@ -22,12 +22,10 @@ import org.json.JSONObject;
 
 public class Control extends AppCompatActivity {
     private static Control instance = null;
-    private static User user;
+    private User user;
     User ConnectedUser;
     Buyer ConnectedBuyer;
     Owner ConnectedOwner;
-
-    private JSONArray FlatsArray;
 
     private Control(){
         super();
@@ -58,37 +56,7 @@ public class Control extends AppCompatActivity {
             ConnectedOwner = new Owner(ConnectedUser.getNum(),ConnectedUser.getLogin(),ConnectedUser.getMdp(),ConnectedUser.getNom(),ConnectedUser.getPrenom(),ConnectedUser.getAdresse(),ConnectedUser.getCodeVille(),ConnectedUser.getTelephone(),ConnectedUser.getType());
             Log.d("info buyer", "********************" + ConnectedOwner.convertToJSON());
         }
-        //a voir comment retourner le buyer ou le owner
+        //a voir comment retourner le buyer ou le owner, là il me retourne juste l'utilisateur mais pas les enfants
         return ConnectedUser;
-    }
-
-    //il ne veut pas me créer mon JSONArray comprend pas je laisse de côté pour le moment
-    public ArrayList<District> getListDistrict(String alldistricts) {
-        ArrayList<District> districtsList = new ArrayList<>();
-        try {
-            JSONArray DistrictsArray = new JSONArray(alldistricts);
-            for(int i=0;i < DistrictsArray.length();i++) {
-                JSONObject DistrictsObject = DistrictsArray.getJSONObject(i);
-                District unDistrict = new District(DistrictsObject.getInt("arrondisseDem"));
-                districtsList.add(i, unDistrict);
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return districtsList;
-    }
-
-    public ArrayList<Request> testTryRequests(JSONArray response) {
-        ArrayList<Request> requestsList = new ArrayList<>();
-        for(int i=0;i<response.length();i++) {
-            try {
-                JSONObject RequestsObject = response.getJSONObject(i);
-                Request oneRequest = new Request(RequestsObject);
-                requestsList.add(i, oneRequest);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
-        return requestsList;
     }
 }

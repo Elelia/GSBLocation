@@ -29,6 +29,7 @@ public class Home extends AppCompatActivity {
         ImageButton buttonRequest = (ImageButton)findViewById(R.id.btnRequestOwner);
         ImageButton buttonOwner = (ImageButton)findViewById(R.id.btnProfileOwner);
         ImageButton buttonAdd = (ImageButton)findViewById(R.id.btnAdd);
+        ImageButton buttonSearch = (ImageButton)findViewById(R.id.btnSearch);
 
         Intent intent = getIntent();
         String whoisonline = intent.getStringExtra("whoisonline");
@@ -41,10 +42,12 @@ public class Home extends AppCompatActivity {
             buttonRequest.setVisibility(View.INVISIBLE);
             buttonOwner.setVisibility(View.INVISIBLE);
             buttonAdd.setVisibility(View.INVISIBLE);
-        } else {
+        }
+        if(ConnectedUser.getType().equals("p")) {
             goRequestOwner();
             goProfileOwner();
             goAddOwner();
+            buttonSearch.setVisibility(View.INVISIBLE);
         }
         //me ramène à la page de connexion
         returnLogin();

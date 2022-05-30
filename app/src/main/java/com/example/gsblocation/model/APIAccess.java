@@ -18,10 +18,10 @@ import java.net.URLEncoder;
 
 public class APIAccess {
 
-    public static final String QUERY_FOR_USERS = "http://192.168.0.12:8080/utilisateurs/";
-    public static final String QUERY_FOR_FLATS = "http://192.168.0.12:8080/appartements/";
-    public static final String QUERY_FOR_DISTRICTS = "http://192.168.0.12:8080/arrondissement/";
-    public static final String QUERY_FOR_REQUESTS = "http://192.168.0.12:8080/demandes/";
+    public static final String QUERY_FOR_USERS = "http://192.168.1.72:8080/utilisateurs/";
+    public static final String QUERY_FOR_FLATS = "http://192.168.1.72:8080/appartements/";
+    public static final String QUERY_FOR_DISTRICTS = "http://192.168.1.72:8080/arrondissement/";
+    public static final String QUERY_FOR_REQUESTS = "http://192.168.1.72:8080/demandes/";
 
     Context context;
     JSONArray response;

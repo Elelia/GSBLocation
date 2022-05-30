@@ -3,6 +3,8 @@ package com.example.gsblocation.view;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.gsblocation.R;
 import com.example.gsblocation.controller.Control;
+import com.example.gsblocation.controller.ControlProfileBuyer;
+import com.example.gsblocation.controller.ControlRequestBuyer;
 import com.example.gsblocation.model.APIAccess;
 import com.example.gsblocation.model.Request;
 import com.example.gsblocation.model.RequestsListAdapter;
@@ -27,7 +29,8 @@ import java.util.ArrayList;
 
 public class ProfileBuyer extends AppCompatActivity {
 
-    private Control control;
+    private ControlProfileBuyer control;
+    private Control controlMain;
     private Integer numBuyer;
     private ArrayList<Request> requestsList = new ArrayList<>();
     private User ConnectedUser;
@@ -41,7 +44,8 @@ public class ProfileBuyer extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_buyer);
-        this.control = Control.getInstance(this);
+        this.control = ControlProfileBuyer.getInstance(this);
+        this.controlMain = Control.getInstance(this);
         ListView mListView = (ListView) findViewById(R.id.listView1);
         userPrenom = (EditText)findViewById(R.id.textPrenom);
         userNom = (EditText)findViewById(R.id.textNom);
@@ -53,7 +57,7 @@ public class ProfileBuyer extends AppCompatActivity {
         //on récupère le numéro de l'utilisateur
         Intent intent = getIntent();
         String whoisonline = intent.getStringExtra("whoisonline");
-        ConnectedUser = this.control.whoLogin(whoisonline);
+        ConnectedUser = this.controlMain.whoLogin(whoisonline);
         numBuyer = ConnectedUser.getNum();
         Log.d("Try", "***************" + numBuyer);
         String nom = ConnectedUser.getNom();
@@ -68,7 +72,7 @@ public class ProfileBuyer extends AppCompatActivity {
         userAdresse.setText(adresse);
         userTelephone.setText(telephone);
 
-        getRequestsByUser();
+        this.control.getRequestsByUser(numBuyer);
         //à partir de là normalement ma liste est remplie right ?
         //en fait on dirait que j'appelle ma méthode à la fin du onCreate c'est nul
         Log.d("Try", "***************" + requestsList);
@@ -81,37 +85,11 @@ public class ProfileBuyer extends AppCompatActivity {
         //RequestsListAdapter adapter = new RequestsListAdapter(this, R.layout.adapter_view_layout, requestsList);
         //mListView.setAdapter(adapter);
         //évidemment l'affichage ne fonctionne pas ahah
-        updateProfile();
+        onClickUpdate();
         returnLogin();
     }
 
-    //ça a faire dans un controleur à part
-    public void getRequestsByUser() {
-        APIAccess APIAccess = new APIAccess(ProfileBuyer.this);
-        //dans le doute on try
-        APIAccess.ReturnRequestsByNumC(numBuyer, new APIAccess.VolleyResponseListener() {
-            @Override
-            public void onError(String message) {
-                Log.d("Error get request", "***************" + message);
-            }
-
-            @Override
-            public void onResponse(JSONArray response) {
-                Log.d("Request ok", "**************" + response);
-                for(int i=0;i<response.length();i++) {
-                    try {
-                        JSONObject RequestsObject = response.getJSONObject(i);
-                        Request oneRequest = new Request(RequestsObject);
-                        requestsList.add(i, oneRequest);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-    }
-
-    private void updateProfile() {
+    private void onClickUpdate() {
         ((Button) findViewById(R.id.buttonUpdateInfo)).setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 String modifNom = userNom.getText().toString();
@@ -120,21 +98,7 @@ public class ProfileBuyer extends AppCompatActivity {
                 String modifAdresse = userAdresse.getText().toString();
                 String modifTel = userTelephone.getText().toString();
                 Integer num = 100;
-                APIAccess APIAccess = new APIAccess(ProfileBuyer.this);
-                APIAccess.UpdateUserInfo(num, modifNom, modifPrenom, modifAdresse, modifVille, modifTel, new APIAccess.VolleyResponseListener() {
-                    @Override
-                    public void onError(String message) {
-                        Log.d("Error update user", "***************" + message);
-                    }
-
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        Log.d("Update ok", "**************" + response);
-                        //Intent intent = new Intent(ProfileBuyer.this, ProfileBuyer.class);
-                        //startActivity(intent);
-                        Toast.makeText(ProfileBuyer.this, "Succes ! ", Toast.LENGTH_SHORT).show();
-                    }
-                });
+                control.updateProfile(modifNom, modifPrenom, modifVille, modifAdresse, modifTel, num);
             }
         });
     }
