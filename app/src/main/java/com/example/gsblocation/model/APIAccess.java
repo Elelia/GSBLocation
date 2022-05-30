@@ -316,4 +316,43 @@ public class APIAccess {
             e.printStackTrace();
         }
     }
+
+    //sans num ça ne marche pas il n'y a pas d'auto increment
+    public void sendNewFlat(Integer num, String type, String prixLoc, String prixChr, String rue, String arrondissement, String etage, String ascenseur, String pieces, String taille, VolleyResponseListener volleyResponseListener) {
+        String url = QUERY_FOR_FLATS + "?numAppart=" + num +"&typeAppart=" + type +"&prixLoc=" + prixLoc + "&prixCharg=" + prixChr + "&rue=" + rue + "&arrondissement=" + arrondissement + "&etage=" + etage + "&ascenseur=" + ascenseur + "&nbPieces=" + pieces + "&taille=" + taille;
+
+        JSONObject requestObject = new JSONObject();
+        JSONArray requestArray = new JSONArray();
+        try {
+            requestObject.put("numAppart",num);
+            requestObject.put("typeAppart",type);
+            requestObject.put("prixLoc",prixLoc);
+            requestObject.put("prixCharg",prixChr);
+            requestObject.put("rue",rue);
+            requestObject.put("arrondissement",arrondissement);
+            requestObject.put("etage",etage);
+            requestObject.put("ascenseur",ascenseur);
+            requestObject.put("nbPieces",pieces);
+            requestObject.put("taille",taille);
+            requestArray.put(requestObject);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.POST, url, requestArray,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        Log.d("add flat","***********************"+response);
+                        //volleyResponseListener.onResponse(response);
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("Error", "****************", error);
+                //volleyResponseListener.onError("Not working");
+            }
+        });
+        MySingleton.getInstance(context).addToRequestQueue(request);
+    }
 }

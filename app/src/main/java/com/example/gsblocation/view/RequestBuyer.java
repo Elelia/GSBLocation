@@ -30,13 +30,13 @@ import java.util.List;
 
 public class RequestBuyer extends AppCompatActivity {
 
-    ControlRequestBuyer control;
-    Spinner spinner;
-    ArrayList<Integer> districtsList = new ArrayList<Integer>();
-    Button bRequest;
-    EditText typeTxt;
-    EditText dateTxt;
-    String whoisonline;
+    private ControlRequestBuyer control;
+    private Spinner spinner;
+    private ArrayList<Integer> districtsList = new ArrayList<Integer>();
+    private Button bRequest;
+    private EditText typeTxt;
+    private EditText dateTxt;
+    private String whoisonline;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
